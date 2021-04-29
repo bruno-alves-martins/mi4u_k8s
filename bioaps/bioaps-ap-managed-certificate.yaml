@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+    name: bioaps-ssl-certificate
+    namespace: bioaps
+spec:
+    domains:
+        - bioaps.mi4u.app

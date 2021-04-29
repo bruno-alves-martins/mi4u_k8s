@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+    name: stg-babi-ssl-certificate
+    namespace: babi
+spec:
+    domains:
+        - apibabi.mi4u.app

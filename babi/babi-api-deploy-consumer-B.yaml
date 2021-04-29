@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: stg-babi-deploy-consumer-b
+    namespace: babi
+    labels:
+        app: babi-consumer-b
+        tier: frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: babi-consumer-b
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 2
+            maxUnavailable: 1
+    template:
+        metadata:
+            labels:
+                app: babi-consumer-b
+                tier: frontend
+        spec:
+            containers:
+                - image: gcr.io/mi4u-303100/apibotbabi:0.0.9
+                  command: ["python"]
+                  args: ["main_con_envia.py"]
+                  imagePullPolicy: IfNotPresent
+                  name: babi-b
+                  resources: 
+                    limits:
+                      cpu: 1000
+                      memory: 1000Mi
+                    requests:
+                      cpu: 300m
+                      memory: 300Mi
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  env:
+                      - name: DIALOGPROJECT
+                        value: "babi-ems-jutg"
+                      - name: RMQ_URL
+                        value: "35.222.164.174"
+                      - name: RMQ_USER
+                        value: "user"
+                      - name: RMQ_PSW
+                        value: "JKK0MfMCijI"
+                      - name: RMQ_PORT
+                        value: "5672"
+                      - name: RMQ_VHOST
+                        value: "/"
+                      - name: WHATS_URL
+                        value: "https://waba.360dialog.io"
+                      - name: WHATS_KEY
+                        value: "n1ymfHFd64qVls4b7w9Z6OLzAK"
+                      - name: WHATS_NUMBER
+                        value: "551935007788"
+                      - name: WHATS_PROFILE_NAME
+                        value: "Babi"
+                      - name: SQLALCHEMY_DATABASE_URI
+                        value: "postgresql://babi:Babi@2021@146.148.106.252:5432/babi"
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            schedulerName: default-scheduler
+            securityContext: {}
+            terminationGracePeriodSeconds: 10

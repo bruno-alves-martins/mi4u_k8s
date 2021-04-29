@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: stg-babi-ssl-ingress
+    namespace: babi
+    annotations:
+        kubernetes.io/ingress.global-static-ip-name: stg-babi-ssl-ingress-ip
+        networking.gke.io/managed-certificates: stg-babi-ssl-certificate
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        kubernetes.io/ingress.allow-http: "false"
+        nginx.ingress.kubernetes.io/proxy-connect-timeout: "240s"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "240s"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "240s"
+        ingress.kubernetes.io/proxy-connect-timeout: "240s"
+        ingress.kubernetes.io/proxy-send-timeout: "240s"
+        ingress.kubernetes.io/proxy-read-timeout: "240s"
+spec:
+    rules:
+        - host: apibabi.mi4u.app
+          http:
+              paths:
+                  - backend:
+                        serviceName: babi
+                        servicePort: 5000

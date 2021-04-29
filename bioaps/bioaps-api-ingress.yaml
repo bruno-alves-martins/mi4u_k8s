@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: bioaps-ssl-ingress
+    namespace: bioaps
+    annotations:
+        kubernetes.io/ingress.global-static-ip-name: bioaps-ssl-ingress-ip
+        networking.gke.io/managed-certificates: bioaps-ssl-certificate
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        kubernetes.io/ingress.allow-http: "false"
+        nginx.ingress.kubernetes.io/proxy-connect-timeout: "240s"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "240s"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "240s"
+        ingress.kubernetes.io/proxy-connect-timeout: "240s"
+        ingress.kubernetes.io/proxy-send-timeout: "240s"
+        ingress.kubernetes.io/proxy-read-timeout: "240s"
+spec:
+    rules:
+        - host: bioaps.mi4u.app
+          http:
+              paths:
+                  - backend:
+                        serviceName: bioaps
+                        servicePort: 5000
